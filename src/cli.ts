@@ -26,7 +26,7 @@ options:
   --lockfile FILE   with --base: the lockfile path (default: package-lock.json)
   --fixtures DIR    read packages from DIR/<name>@<version>/ instead of the registry
   --registry URL    registry for tarballs the lockfile has no URL for (default: https://registry.npmjs.org)
-  --cache DIR       tarball cache (default: ~/.cache/permit)
+  --cache DIR       tarball cache (default: $XDG_CACHE_HOME/permit, else ~/.cache/permit)
   --json            machine-readable report
 
 exit codes: 0 nothing new or all of it allowed, 1 a package newly gains a capability

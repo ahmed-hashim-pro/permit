@@ -37,7 +37,8 @@ export const DESCRIPTIONS: Record<Capability, string> = {
   "dynamic-code": "evaluates strings as code (eval, new Function, vm)",
   "dynamic-require": "loads a module whose name is computed at run time",
   binary: "ships a compiled executable or native library",
-  unanalyzable: "has JavaScript that could not be parsed",
+  unanalyzable:
+    "could not be checked: JavaScript that does not parse, a file over 4 MB, or a package that could not be fetched",
 };
 
 export interface Evidence {
