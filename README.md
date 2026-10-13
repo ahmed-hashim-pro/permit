@@ -155,7 +155,8 @@ reports that as a capability instead of dropping it.
    checked against the lockfile's `integrity` hash, so the bytes analysed
    are the bytes npm would install, and a mismatch is an error. Downloads run
    eight at a time with retries. Tarballs and unpacked files are cached in
-   `~/.cache/permit` by name, version and hash.
+   `$XDG_CACHE_HOME/permit` (or `~/.cache/permit` when it is unset) by name,
+   version and hash.
 4. **Unpack safely.** Only regular files are written. Symlinks and hard
    links are skipped, and an entry whose path would escape the package
    directory makes the tarball be refused, not analysed.
@@ -194,7 +195,7 @@ took 1 s.
 
 ## How it is tested
 
-`npm test` runs 35 tests with `node:test`, all offline:
+`npm test` runs 36 tests with `node:test`, all offline:
 
 - **The analyser (8).**
   - 26 snippets, one per detection route: CommonJS, ESM, `node:` prefixes,
@@ -209,9 +210,10 @@ took 1 s.
 - **Lockfiles (5) and the policy (2).** Valid v2/v3 trees with nested,
   scoped and aliased packages and workspace links, plus every class of
   malformed input.
-- **Sources (7).**
+- **Sources (8).**
   - A tar writer in the tests produces archives with pax long names,
-    directories, symlinks and hard links. Path-traversal entries are refused.
+    directories, symlinks and hard links. Path-traversal entries are refused,
+    and a refused tarball leaves nothing in the cache.
   - A real `npm pack` tarball is read.
   - SRI integrity: several hashes, and mismatches.
   - A local HTTP registry checks downloading, caching (the second fetch makes

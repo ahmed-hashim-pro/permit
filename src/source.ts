@@ -171,13 +171,24 @@ export class RegistrySource implements Source {
     // a half-written package that looks complete.
     const tmp = `${root}.tmp-${process.pid}`;
     rmSync(tmp, { recursive: true, force: true });
-    mkdirSync(join(tmp, "package"), { recursive: true });
-    extractTarball(data, join(tmp, "package"));
-    writeFileSync(join(tmp, "package.tgz"), data);
-    writeFileSync(join(tmp, ".permit-complete"), url + "\n");
-    rmSync(root, { recursive: true, force: true });
-    mkdirSync(dirname(root), { recursive: true });
-    renameSync(tmp, root);
+    try {
+      mkdirSync(join(tmp, "package"), { recursive: true });
+      try {
+        extractTarball(data, join(tmp, "package"));
+      } catch (e) {
+        if (e instanceof SourceError) throw new SourceError(`${pkg.name}@${pkg.version}: ${e.message}`);
+        throw e;
+      }
+      writeFileSync(join(tmp, "package.tgz"), data);
+      writeFileSync(join(tmp, ".permit-complete"), url + "\n");
+      rmSync(root, { recursive: true, force: true });
+      mkdirSync(dirname(root), { recursive: true });
+      renameSync(tmp, root);
+    } catch (e) {
+      // A refused or failed unpack leaves nothing behind in the cache.
+      rmSync(tmp, { recursive: true, force: true });
+      throw e;
+    }
     return dir;
   }
 }

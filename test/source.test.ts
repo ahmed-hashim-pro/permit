@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { AddressInfo } from "node:net";
 import { checkIntegrity, extractTarball, FixtureSource, RegistrySource, SourceError } from "../src/source.js";
@@ -129,4 +129,19 @@ test("registry: retries a 5xx, but not a 4xx", async () => {
   const notFound: typeof fetch = async () => (gone++, new Response("", { status: 404 }));
   await assert.rejects(new RegistrySource({ cacheDir: tempDir(), fetchImpl: notFound }).unpack(pkg()), /404/);
   assert.equal(gone, 1);
+});
+
+test("registry: a refused tarball names the package and leaves nothing in the cache", async () => {
+  const evil = tarball([
+    { name: "package/package.json", body: '{"name":"p","version":"1.0.0"}' },
+    { name: "package/../../evil.js", body: "x" },
+  ]);
+  const cacheDir = tempDir();
+  const s = new RegistrySource({ cacheDir, fetchImpl: async () => new Response(evil) });
+  await assert.rejects(s.unpack(pkg({ integrity: sri(evil) })), (e: Error) => {
+    assert.ok(e instanceof SourceError);
+    assert.match(e.message, /^p@1\.0\.0: tarball entry '\.\.\/\.\.\/evil\.js' escapes/);
+    return true;
+  });
+  assert.deepEqual(readdirSync(cacheDir), []);
 });
