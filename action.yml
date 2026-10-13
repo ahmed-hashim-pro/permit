@@ -1,0 +1,42 @@
+name: permit
+description: Block a pull request when a dependency upgrade newly gains network, install-script, exec or other capabilities
+author: ahmed-hashim-pro
+branding:
+  icon: shield
+  color: blue
+inputs:
+  base:
+    description: "Git ref whose package-lock.json is the 'before'; defaults to the pull request's base branch"
+    required: false
+    default: ""
+  lockfile:
+    description: Path to package-lock.json
+    required: false
+    default: package-lock.json
+  policy:
+    description: Path to permit.json (used if it exists)
+    required: false
+    default: permit.json
+runs:
+  using: composite
+  steps:
+    - name: Build permit
+      shell: bash
+      run: |
+        cd "$GITHUB_ACTION_PATH"
+        npm ci --no-audit --no-fund --silent
+        npm run build --silent
+    - name: Diff the lockfile
+      shell: bash
+      env:
+        BASE: ${{ inputs.base || format('origin/{0}', github.base_ref) }}
+        LOCKFILE: ${{ inputs.lockfile }}
+        POLICY: ${{ inputs.policy }}
+      run: |
+        git fetch --no-tags --depth=1 origin "${BASE#origin/}" 2>/dev/null || true
+        args=(diff --base "$BASE" --lockfile "$LOCKFILE")
+        [ -f "$POLICY" ] && args+=(--policy "$POLICY")
+        node "$GITHUB_ACTION_PATH/dist/src/cli.js" "${args[@]}" | tee "$RUNNER_TEMP/permit-report.txt"
+        status=${PIPESTATUS[0]}
+        { echo '### permit'; echo '```'; cat "$RUNNER_TEMP/permit-report.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+        exit $status

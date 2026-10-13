@@ -1,0 +1,9 @@
+{
+  "$comment": "fast-bundler ships a native binary and checks it on install, like esbuild.",
+  "allow": {
+    "fast-bundler": [
+      "install-script",
+      "binary"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "ua-sniff",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "ua-sniff",
+      "version": "1.0.0",
+      "dependencies": {
+        "ua-sniff": "^0.7.29"
+      }
+    },
+    "node_modules/ua-sniff": {
+      "version": "0.7.29",
+      "resolved": "https://registry.npmjs.org/ua-sniff/-/ua-sniff-0.7.29.tgz",
+      "license": "MIT"
+    }
+  }
+}

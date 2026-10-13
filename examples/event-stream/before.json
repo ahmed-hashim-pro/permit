@@ -1,0 +1,28 @@
+{
+  "name": "event-stream",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "event-stream",
+      "version": "1.0.0",
+      "dependencies": {
+        "stream-pipe": "^3.3.5"
+      }
+    },
+    "node_modules/stream-pipe": {
+      "version": "3.3.5",
+      "resolved": "https://registry.npmjs.org/stream-pipe/-/stream-pipe-3.3.5.tgz",
+      "license": "MIT",
+      "dependencies": {
+        "through-lite": "^2.3.1"
+      }
+    },
+    "node_modules/through-lite": {
+      "version": "2.3.8",
+      "resolved": "https://registry.npmjs.org/through-lite/-/through-lite-2.3.8.tgz",
+      "license": "MIT"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "permit-diff",
+  "version": "0.1.0",
+  "description": "Diff what an npm dependency upgrade newly gets access to (network, install scripts, exec, env...) and block the merge until someone approves it",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "permit": "dist/src/cli.js"
+  },
+  "files": [
+    "dist/src"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "typecheck": "tsc -p . --noEmit",
+    "format": "prettier --write .",
+    "lint": "prettier --check . && tsc -p . --noEmit",
+    "test": "tsc -p . && node --test dist/test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-hashim-pro/permit"
+  },
+  "dependencies": {
+    "acorn": "8.14.0",
+    "acorn-walk": "8.3.4"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.6",
+    "prettier": "3.3.3",
+    "typescript": "5.6.3"
+  }
+}

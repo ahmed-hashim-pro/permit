@@ -1,0 +1,32 @@
+{
+  "name": "monday",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "monday",
+      "version": "1.0.0",
+      "dependencies": {
+        "left-padder": "^1.2.0",
+        "fast-bundler": "^0.20.2",
+        "@acme/logger": "^2.0.0"
+      }
+    },
+    "node_modules/left-padder": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/left-padder/-/left-padder-1.2.0.tgz",
+      "license": "MIT"
+    },
+    "node_modules/fast-bundler": {
+      "version": "0.20.2",
+      "resolved": "https://registry.npmjs.org/fast-bundler/-/fast-bundler-0.20.2.tgz",
+      "license": "MIT"
+    },
+    "node_modules/@acme/logger": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/@acme/logger/-/logger-2.0.0.tgz",
+      "license": "MIT"
+    }
+  }
+}

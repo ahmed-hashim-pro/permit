@@ -1,0 +1,1 @@
+{ "name": "stream-pipe", "version": "3.3.5", "main": "index.js", "dependencies": { "through-lite": "^2.3.1" } }
